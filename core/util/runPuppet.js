@@ -32,7 +32,8 @@ module.exports = function (args) {
   config._fileNameTemplate = config.fileNameTemplate || DEFAULT_FILENAME_TEMPLATE;
   config._outputFileFormatSuffix = '.' + ((config.outputFormat && config.outputFormat.match(/jpg|jpeg/)) || 'png');
   config._configId = config.id || engineTools.genHash(config.backstopConfigFileName);
-
+  config._logBrowserConsole = (typeof config.logBrowserConsole != 'undefined' ? config.logBrowserConsole : true);
+  
   return processScenarioView(scenario, variantOrScenarioLabelSafe, scenarioLabelSafe, viewport, config);
 };
 
@@ -82,7 +83,11 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
   page.on('console', msg => {
     for (let i = 0; i < msg.args().length; ++i) {
       const line = msg.args()[i];
-      console.log(`Browser Console Log ${i}: ${line}`);
+
+      if (config._logBrowserConsole) {
+        console.log(`Browser Console Log ${i}: ${line}`);
+      }
+
       if (readyEvent && new RegExp(readyEvent).test(line)) {
         readyResolve();
       }
