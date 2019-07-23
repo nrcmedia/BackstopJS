@@ -64,7 +64,30 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
   const browser = await puppeteer.launch(puppeteerArgs);
   const page = await browser.newPage();
 
-  page.setViewport({ width: VP_W, height: VP_H });
+  let viewportConfig = { width: VP_W, height: VP_H, hasTouch: true };
+
+  if (typeof viewport.deviceScaleFactor != 'undefined') {
+    viewportConfig.deviceScaleFactor = viewport.deviceScaleFactor;
+  }  
+
+  if (typeof viewport.isMobile != 'undefined') {
+    viewportConfig.isMobile = viewport.isMobile;
+  }
+
+  if (typeof viewport.isMobile != 'undefined') {
+    viewportConfig.isMobile = viewport.isMobile;
+  }
+
+  if (typeof viewport.hasTouch != 'undefined') {
+    viewportConfig.hasTouch = viewport.hasTouch;
+  }
+
+  if (typeof viewport.isLandscape != 'undefined') {
+    viewportConfig.isLandscape = viewport.isLandscape;
+  }
+
+  await page.setViewport(viewportConfig);
+  
   page.setDefaultNavigationTimeout(engineTools.getEngineOption(config, 'waitTimeout', TEST_TIMEOUT));
 
   if (isReference) {
