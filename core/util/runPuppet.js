@@ -64,7 +64,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
   const browser = await puppeteer.launch(puppeteerArgs);
   const page = await browser.newPage();
 
-  let viewportConfig = { width: VP_W, height: VP_H, hasTouch: true };
+  let viewportConfig = { width: VP_W, height: VP_H };
 
   if (typeof viewport.deviceScaleFactor != 'undefined') {
     viewportConfig.deviceScaleFactor = viewport.deviceScaleFactor;
